@@ -1,0 +1,222 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Saved player profile storing display name, character gender, country, earned coins, owned outfits, weapon skins, and online presence for Google-authenticated players.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Owner Firebase Authentication UID"
+        },
+        "playerName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 18,
+          "description": "Player's chosen in-game callsign"
+        },
+        "gender": {
+          "type": "string",
+          "enum": ["male", "female"],
+          "description": "Selected 3D character model gender"
+        },
+        "country": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2,
+          "pattern": "^[A-Z]{2}$",
+          "description": "Selected ISO 3166-1 alpha-2 country code"
+        },
+        "coins": {
+          "type": "integer",
+          "description": "Earned currency balance used to purchase suits, upgrades, weapons, and weapon skins"
+        },
+        "rankedWins": {
+          "type": "integer",
+          "description": "Cumulative victories earned in Ranked Mode determining rank tier badge"
+        },
+        "ownedOutfits": {
+          "type": "array",
+          "description": "Bounded list of unlocked suit IDs owned by the player"
+        },
+        "equippedOutfit": {
+          "type": "string",
+          "enum": [
+            "default",
+            "cyber_crimson",
+            "neon_phantom",
+            "emerald_viper",
+            "solar_gold",
+            "obsidian_royale"
+          ],
+          "description": "Currently equipped 3D suit ID"
+        },
+        "outfitLevels": {
+          "type": "object",
+          "description": "Map of suit ID to current upgrade level (1 to 4)"
+        },
+        "ownedWeapons": {
+          "type": "array",
+          "description": "Bounded list of unlocked weapon IDs owned by the player"
+        },
+        "equippedWeapon": {
+          "type": "string",
+          "enum": [
+            "pulse_carbine",
+            "twin_smg",
+            "scatter_shotgun",
+            "rail_sniper"
+          ],
+          "description": "Currently equipped 3D weapon ID"
+        },
+        "ownedWeaponSkins": {
+          "type": "array",
+          "description": "Bounded list of unlocked weapon skin IDs owned by the player"
+        },
+        "equippedWeaponSkin": {
+          "type": "string",
+          "enum": [
+            "default",
+            "plasma_cobalt",
+            "solar_ember",
+            "emerald_helix",
+            "crimson_striker",
+            "void_prism"
+          ],
+          "description": "Currently equipped 3D weapon skin ID"
+        },
+        "onlineStatus": {
+          "type": "string",
+          "enum": ["online", "in_match", "offline"],
+          "description": "Live multiplayer presence status for friends list"
+        },
+        "currentRoomCode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16,
+          "pattern": "^[A-Z0-9]{1,16}$",
+          "description": "Active room code (PUBLIC or private room code)"
+        },
+        "dailyMissionsDate": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "description": "Active calendar date key (YYYY-MM-DD) for daily mission tracking"
+        },
+        "dailyElims": {
+          "type": "integer",
+          "description": "Daily elimination progress counter"
+        },
+        "dailyWins": {
+          "type": "integer",
+          "description": "Daily match wins progress counter"
+        },
+        "dailyMatches": {
+          "type": "integer",
+          "description": "Daily completed matches counter"
+        },
+        "dailyBestStreak": {
+          "type": "integer",
+          "description": "Best elimination streak achieved today"
+        },
+        "dailyClaimedIds": {
+          "type": "array",
+          "description": "Bounded list of daily mission IDs claimed today"
+        },
+        "lastSeenAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the latest presence heartbeat"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server last update timestamp"
+        }
+      },
+      "required": ["uid", "playerName", "gender", "createdAt", "updatedAt"]
+    },
+    "RoomInvite": {
+      "title": "RoomInvite",
+      "description": "Direct private room invitation sent from one player to a friend.",
+      "type": "object",
+      "properties": {
+        "fromUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Sender Firebase Authentication UID"
+        },
+        "fromName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 18,
+          "description": "Sender in-game callsign"
+        },
+        "fromCountry": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2,
+          "pattern": "^[A-Z]{2}$",
+          "description": "Sender ISO country code"
+        },
+        "toUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Recipient Firebase Authentication UID"
+        },
+        "toName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 18,
+          "description": "Recipient in-game callsign"
+        },
+        "roomCode": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 10,
+          "pattern": "^[A-Z0-9]{4,10}$",
+          "description": "Private room code to join"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "accepted", "declined"],
+          "description": "Invitation response state"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server update timestamp"
+        }
+      },
+      "required": ["fromUid", "fromName", "toUid", "toName", "roomCode", "status", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/userProfiles/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Non-PII player profile readable by verified players for friends & status, strictly writable only by the owner."
+    },
+    "/roomInvites/{inviteId}": {
+      "schema": { "$ref": "#/entities/RoomInvite" },
+      "description": "Direct private room invitations readable and actionable only by sender or recipient."
+    }
+  }
+}
